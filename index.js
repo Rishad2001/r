@@ -3,7 +3,7 @@ const taskContainer = document.querySelector(".task__container");
 console.log(taskContainer);
 
 //global store
-const globalStore = [];
+let globalStore = [];
 
 const newCard = ({
     id, 
@@ -17,8 +17,8 @@ const newCard = ({
     <button type="button" class="btn btn-outline-success">
       <i class="fas fa-pencil-alt"></i>
     </button>
-    <button type="button" class="btn btn-outline-danger">
-      <i class="fas fa-trash-alt"></i>
+    <button type="button" id=${id} class="btn btn-outline-danger" onclick="deleteCard.apply(this, arguments)">
+      <i class="fas fa-trash-alt"  onclick="deleteCard.apply(this, arguments)" id=${id}></i>
     </button>
   </div>
     <img src=${imageUrl} alt ="dfv jsd">
@@ -49,6 +49,10 @@ const loadInitialTaskCards = () =>{
   });
 }; 
 
+const updateLocalStorage = () => {
+  localStorage.setItem("tasky", JSON.stringify({ cards: globalStore }));
+}; 
+
 
 const saveChanges= () => {
     const taskData = {
@@ -67,9 +71,46 @@ const saveChanges= () => {
      //we cannot directly store array in local stporage thats why we store it in object
      //here tasky is the key & the object {cards: globalStore is our data}
      //JSON.stringify for converting object to string
-     localStorage.setItem("tasky", JSON.stringify({ cards: globalStore }));
+     updateLocalStorage();
   };
 
+
+const deleteCard = (event) => {
+  //id 
+
+  event = window.event;
+  const targetID =event.target.id;
+  const tagname =event.target.tagName; //BUTTON
+
+  //search the globalStore, return the object which matches with the id
+  globalStore = globalStore.filter((cardObject) => cardObject.id !== targetID);
+  updateLocalStorage();
+
+    //access the DOM to remove them
+
+    if(tagname==="BUTTON"){
+      //task container
+      return taskContainer.removeChild(
+        event.target.parentNode.parentNode.parentNode //remove col-md-6 ... div tag
+      );
+    }
+
+    //task__container
+    return taskContainer.removeChild(
+      event.target.parentNode.parentNode.parentNode.parentNode //parent node means parent tag
+    );
+};  
 // write about modal 
 //write about onclick
 //write about Date.now()
+
+
+//issues
+
+//the modal was not closing upon adding new caeds. (solved)
+// the cards were deleted after refresh -> local storage (5mb)solved
+
+//features
+//delete modal
+//edit modal
+//edit task
