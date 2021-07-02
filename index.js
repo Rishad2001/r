@@ -105,7 +105,7 @@ const editCard = (event) => {
   const targetID =event.target.id;
   const tagname =event.target.tagName;
 
-
+//content editable---------------------------------------------------------
   let parentElement;
 
   if (tagname === "BUTTON") {
