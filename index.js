@@ -14,8 +14,8 @@ const newCard = ({
 }) =>  `<div class="col-md-6 col-lg-4" id=${id}>
 <div class="card text-">
   <div class="card-header d-flex justify-content-end gap-2">
-    <button type="button" class="btn btn-outline-success">
-      <i class="fas fa-pencil-alt"></i>
+    <button type="button" class="btn btn-outline-success" onclick="editCard.apply(this, arguments)" id=${id}>
+      <i class="fas fa-pencil-alt" id=${id} onclick="editCard.apply(this, arguments)"></i>
     </button>
     <button type="button" id=${id} class="btn btn-outline-danger" onclick="deleteCard.apply(this, arguments)">
       <i class="fas fa-trash-alt"  onclick="deleteCard.apply(this, arguments)" id=${id}></i>
@@ -74,7 +74,6 @@ const saveChanges= () => {
      updateLocalStorage();
   };
 
-
 const deleteCard = (event) => {
   //id 
 
@@ -88,7 +87,7 @@ const deleteCard = (event) => {
 
     //access the DOM to remove them
 
-    if(tagname==="BUTTON"){
+    if(tagname ==="BUTTON"){
       //task container
       return taskContainer.removeChild(
         event.target.parentNode.parentNode.parentNode //remove col-md-6 ... div tag
@@ -100,6 +99,37 @@ const deleteCard = (event) => {
       event.target.parentNode.parentNode.parentNode.parentNode //parent node means parent tag
     );
 };  
+
+const editCard = (event) => {
+  event = window.event;
+  const targetID =event.target.id;
+  const tagname =event.target.tagName;
+
+
+  let parentElement;
+
+  if (tagname === "BUTTON") {
+    parentElement = event.target.parentNode.parentNode;
+  }else {
+      parentElement = event.target.parentNode.parentNode.parentNode;
+    }
+
+    let taskTitle = parentElement.childNodes[5].childNodes[1];
+    let taskDescription = parentElement.childNodes[5].childNodes[3];
+    let taskType = parentElement.childNodes[5].childNodes[5];
+    //for changing open task to save changes
+    let submitButton = parentElement.childNodes[7].childNodes[1];
+    
+    //setAttr4ibute
+  taskTitle.setAttribute("contenteditable", "true");
+  taskDescription.setAttribute("contenteditable", "true");
+  taskType.setAttribute("contenteditable", "true");  
+  submitButton.innerHTML = "save changes"
+
+};
+
+
+
 // write about modal 
 //write about onclick
 //write about Date.now()
