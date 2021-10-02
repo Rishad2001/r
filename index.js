@@ -124,11 +124,31 @@ const editCard = (event) => {
   taskTitle.setAttribute("contenteditable", "true");
   taskDescription.setAttribute("contenteditable", "true");
   taskType.setAttribute("contenteditable", "true");  
+  submitButton.setAttribute("onclick", "saveEditChanges.apply(this, arguments");
   submitButton.innerHTML = "save changes"
 
 };
 
+const saveEditChanges = (event) => {
+  if (tagname === "BUTTON") {
+    parentElement = event.target.parentNode.parentNode;
+  }else {
+      parentElement = event.target.parentNode.parentNode.parentNode;
+    }
 
+    let taskTitle = parentElement.childNodes[5].childNodes[1];
+    let taskDescription = parentElement.childNodes[5].childNodes[3];
+    let taskType = parentElement.childNodes[5].childNodes[5];
+    //for changing open task to save changes
+    let submitButton = parentElement.childNodes[7].childNodes[1];
+
+    constUpdteDate = {
+      taskTitle: taskTitle.innerHTML,
+      taskType: taskType .innerHTML,
+      taskDescription: taskDescription.innerHTML,
+    };
+    console.log(UpdateData);
+};
 
 // write about modal 
 //write about onclick
